@@ -40,6 +40,8 @@ Make sure you understand how [IP addresses](virtual-network-ip-addresses-overvie
   - You can use PowerShell or the [Azure Management REST API](https://msdn.microsoft.com/library/azure/dn722420.aspx) to reserve an IP address in a particular region. This reserved IP address is associated to your subscription. You cannot reserve an IP address by using the Management Portal.
 1. Can I use this with affinity group based VNets?
   - Reserved IPs are only supported in regional VNets. It is not supported for VNets that are associated with affinity groups. For more information about associating a VNet with a region or an affinity group, see [About Regional VNets and Affinity Groups](virtual-networks-migrate-to-regional-vnet.md).
+1.  Why can't I start my VM after adding a static IP to the cloud service?
+   - You may receive a message similar to "Deployment must contain at least one endpoint in order to use a ReservedIP." if your VM doesn't have any endpoint.  Each VM must have at least one endpoint to use ReservedIPs.
 
 ## How to manage reserved VIPs
 
