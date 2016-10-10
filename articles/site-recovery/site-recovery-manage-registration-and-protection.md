@@ -22,7 +22,7 @@ The Azure Site Recovery service contributes to your business continuity and disa
 
 ## Overview
 
-This article describes how to unregister servers from the Site Recovery vault and how to disable protection for virtual machines protected by Site Recovery. 
+This article describes how to unregister servers from the Site Recovery vault (classic portal) and how to disable protection for virtual machines protected by Site Recovery. 
 
 Post any comments or questions at the bottom of this article, or on the [Azure Recovery Services Forum](https://social.msdn.microsoft.com/forums/azure/home?forum=hypervrecovmgr).
 
