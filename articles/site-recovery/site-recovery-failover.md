@@ -154,10 +154,9 @@ If the virtual machines involved in test failover use DHCP, a test DHCP server s
 ### Prepare Active Directory
 To run a test failover for application testing, you’ll need a copy of the production Active Directory environment in your test environment. Go through [test failover considerations for active directory](site-recovery-active-directory.md#considerations-for-test-failover) section for more details. 
 
-
 ### Prepare DNS
 
-Prepare a DNS server for the test failover as follows:
+repare a DNS server for the test failover as follows:
 
 - **DHCP**—If virtual machines use DHCP, the IP address of the test DNS should be updated on the test DHCP server. If you’re using a network type of Windows Network Virtualization, the VMM server acts as the DHCP server. Therefore, the IP address of DNS should be updated in the test failover network. In this case, the virtual machines will register themselves to the relevant DNS Server.
 - **Static address**—If virtual machines use a static IP address, the IP address of the test DNS server should be updated in test failover network. You might need to update DNS with the IP address of the test virtual machines. You can use the following sample script for this purpose: 
@@ -167,7 +166,7 @@ Prepare a DNS server for the test failover as follows:
 	    [string]$name,
 	    [string]$IP
 	    )
-	    $Record = Get-DnsServerResourceRecord -ZoneName $zone -Name $name
+    $Record = Get-DnsServerResourceRecord -ZoneName $zone -Name $name
 	    $newrecord = $record.clone()
 	    $newrecord.RecordData[0].IPv4Address  =  $IP
 	    Set-DnsServerResourceRecord -zonename $zone -OldInputObject $record -NewInputObject $Newrecord
@@ -187,7 +186,7 @@ Prepare a DNS server for the test failover as follows:
 
 5. If you're failing over to Azure and data encryption is enabled for the cloud, in **Encryption Key** select the certificate that was issued when you enabled data encryption during Provider installation on the VMM server. 
 6. When a planned failover begins the first step is to shut down the virtual machines to ensure no data loss. You can follow the failover progress on the **Jobs** tab. If an error occurs in the failover (either on a virtual machine or in a script that is included in the recovery plan), the planned failover of a recovery plan stops. You can initiate the failover again.
-8. After replica virtual machines are created they're in a commit pending state. Click **Commit** to commit the failover. 
+8. After replica virtual machines are created they're in a commit pending state. If the VM is being migrated to Azure, Complete Migration should be used after the validation is successful. If the intent is to bring it back on-premises (failover from Azure to on-premises) at a later point, then Commit should be used. 
 9. After replication is complete the virtual machines start up at the secondary location. 
 
 ## Run an unplanned failover
@@ -203,7 +202,7 @@ This procedure describes how to run an unplanned failover for a recovery plan. A
 4. If you're failing over to Azure and data encryption is enabled for the cloud, in **Encryption Key** select the certificate that was issued when you enabled data encryption during Provider installation on the VMM server. 
 5. Select **Shut down virtual machines and synchronize the latest data** to specify that Site Recovery should try to shut down the protected virtual machines and synchronize the data so that the latest version of the data will be failed over. If you don’t select this option or the attempt doesn’t succeed the failover will be from the latest available recovery point for the virtual machine.
 6. You can follow the failover progress on the **Jobs** tab. Note that even if errors occur during an unplanned failover, the recovery plan runs until it is complete.
-7. After the failover, the virtual machines are in a **commit pending** state. Click **Commit** to commit the failover.
+7. After the failover, the virtual machines are in a **commit pending** state. 
 8. If you set up replication to use multiple recovery points, in Change Recovery Point you can select to use a recovery point that isn't the latest (latest is used by default). After you commit additional recovery points will be removed.
 9. After replication is complete the virtual machines start up and are running at the secondary location. However they aren’t protected or replicating. When the primary site is available again with the same underlying infrastructure, click **Reverse Replicate** to begin reverse replication. This ensures that all the data is replicated back to the primary site, and that the virtual machine is ready for failover again. Reverse replication after an unplanned failover incurs an overhead in data transfer. The transfer will use the same method that is configured for initial replication settings for the cloud.
 
